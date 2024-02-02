@@ -1,12 +1,34 @@
-import { pizzas } from "@/data";
+
 import Image from "next/image";
 import Link from "next/link";
+import { typeCategoryProductsData } from "../../../../types";
 
+const getData = async (category:string) => {
+  const res = await fetch(`http://localhost:3000/api/products?cat=${category}`,{
+    cache:"no-cache"
+  })
+  
+  if(!res.ok){
+    throw new Error("Request products error")
+  }
 
-export default function CategoryPage() {
+  const data = res.json()
+   
+  return data
+}
+
+type CategoryPageParams = {
+  params:{
+    category:string
+  }
+}
+export default async function CategoryPage({params}:CategoryPageParams) {
+
+  const categoryData:typeCategoryProductsData[] = await getData(params.category)
+  
   return (
     <section className="flex flex-wrap text-red-500">
-      {pizzas.map(pizza =>(
+      {categoryData.map(pizza =>(
 
         <Link href={`/product/${pizza.id}`} className="w-full sm:w-1/2 p-4 lg:w-1/3 h-[60vh] border-r-2 border-b-2 border-red-500 flex flex-col justify-between group hover:bg-fuchsia-50" key={pizza.id}>
 
