@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { menuData } from "../../../types";
+import { getServerSession } from "next-auth";
  
 
 const getData = async () => {
@@ -18,7 +19,7 @@ const getData = async () => {
 
 
 export default async function MenuPage() {
-
+ 
   const menu:menuData = await getData()
   
   

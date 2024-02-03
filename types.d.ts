@@ -23,3 +23,22 @@ export type typeCategoryProductsData = {
   title:string,
   price:number
 }
+
+export type typeOrderData = {
+  id:string,
+  userEmail:string,
+  price:number,
+  products: typCartItem[],
+  status:string,
+  createdAt: Date,
+  intent_id?:string
+}
+
+export type typCartItem = {
+  id:string,
+  title:string,
+  img?:string,
+  price:number,
+  optionTitle?:string,
+  quantity:number
+}
