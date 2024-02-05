@@ -2,11 +2,16 @@
 
 import { useCartStore } from "@/utils/zustand/store";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function CartPage() {
 
   const {products, totalItems,totalPrice,removeFromCart} = useCartStore()
+
+  useEffect(() =>{
+    useCartStore.persist.rehydrate()
+  },[])
+
   return (
     <div className="h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex flex-col text-red-500 lg:flex-row">
       {/* PRODUCTS CONTAINER */}

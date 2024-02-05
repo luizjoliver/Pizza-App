@@ -26,6 +26,9 @@ export default function Price ({ product}: {product:typeProductsData})  {
     toast.success("The Product was added to the cart")
   }
 
+  useEffect(() =>{
+    useCartStore.persist.rehydrate()
+  },[])
 
   useEffect(() => {
    if(product.options?.length ){
