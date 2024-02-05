@@ -1,30 +1,46 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { typeProductsData } from "../../types";
+import { useCartStore } from "@/utils/zustand/store";
+import { toast } from "react-toastify";
 
-type PriceProps = {
-  price: number;
-  id: number;
-  options?: { title: string; additionalPrice: number }[];
-};
 
-export default function Price ({ price, id, options }: PriceProps)  {
-  const [total, setTotal] = useState(price);
+
+export default function Price ({ product}: {product:typeProductsData})  {
+  const [total, setTotal] = useState(product.price);
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState(0);
 
+  const {addToCart} = useCartStore()
+
+  function handleCart () {
+    addToCart({
+      id: product.id,
+      title: product.title,
+      img: product.img,
+      price: total,
+      ...(product.options?.length && {optionTitle: product.options[selected].title}),
+      quantity: quantity
+    })
+    toast.success("The Product was added to the cart")
+  }
+
+
   useEffect(() => {
-    setTotal(
-      quantity * (options ? price + options[selected].additionalPrice : price)
-    );
-  }, [quantity, selected, options, price]);
+   if(product.options?.length ){
+    setTotal(product.price * quantity + product.options[selected].additionalPrice)
+   }
+  }, [quantity, selected,  product]);
+
+
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-bold">${total.toFixed(2)}</h2>
+      <h2 className="text-2xl font-bold">${total}</h2>
       {/* OPTIONS CONTAINER */}
       <div className="flex gap-4">
-        {options?.map((option, index) => (
+        {product.options?.length! > 0 && product.options?.map((option, index) => (
           <button
             key={option.title}
             className="min-w-[6rem] p-2 ring-1 ring-red-400 rounded-md"
@@ -58,7 +74,8 @@ export default function Price ({ price, id, options }: PriceProps)  {
           </div>
         </div>
         {/* CART BUTTON */}
-        <button className="uppercase w-56 bg-red-500 text-white p-3 ring-1 ring-red-500">
+        <button className="uppercase w-56 bg-red-500 text-white p-3 ring-1 ring-red-500"
+        onClick={handleCart}>
           Add to Cart
         </button>
       </div>
