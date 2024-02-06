@@ -21,7 +21,7 @@ export default function CartPage() {
           <div className="flex items-center justify-between mb-4" key={product.id}>
           {product.img && <Image src={product.img} alt="" width={100} height={100} /> }
           <div className="">
-            <h1 className="uppercase text-xl font-bold">{product.title}</h1>
+            <h1 className="uppercase text-xl font-bold">{product.title} x {product.quantity}</h1>
             <span>{product.optionTitle}</span>
           </div>
           <h2 className="font-bold">{product.price}</h2>
