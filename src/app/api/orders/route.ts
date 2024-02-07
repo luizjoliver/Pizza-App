@@ -31,3 +31,29 @@ export async function GET(request:NextRequest){
     {status:401})
 }
 }
+
+export async function POST(request:NextRequest){
+    const session = await getAuthSession()
+
+    if(session){
+    try {
+
+        const body = await request.json()
+        if(session.user){
+            const order = await prismaClient.order.create({
+                data:body
+            })
+            return new NextResponse(JSON.stringify(order),{status:201})
+        }
+    } catch (error) {
+       
+        
+
+    }
+}else{
+    return new NextResponse(JSON.stringify({message:"you are not authenticated"}),
+    {status:401})
+}
+
+
+}
